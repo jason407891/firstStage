@@ -1,0 +1,180 @@
+<!DOCTYPE html> <!--文件型態-->
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+		<title>week2</title> <!--網頁標題-->
+	<body><!--主畫面都在body中-->
+		<h3>please refer to console</h3>
+    <script>
+
+    //task1
+
+        function findAndPrint(messages){
+        // write down your judgment rules in comments
+        // your code here, based on your own rules
+        let query=["18 years old","legal age","college student","vote"];
+        let obj=messages;
+        let names=Object.keys(obj); // names=["人名"]
+
+        for(let q=0;q<query.length;q++){
+            for(let i=0;i<names.length;i++){
+                if(obj[names[i]].includes(query[q])){
+                    console.log(names[i])
+                }
+            }
+        }
+        }
+        findAndPrint({
+        "Bob":"My name is Bob. I'm 18 years old.",
+        "Mary":"Hello, glad to meet you.",
+        "Copper":"I'm a college student. Nice to meet you.",
+        "Leslie":"I am of legal age in Taiwan.",
+        "Vivian":"I will vote for Donald Trump next week",
+        "Jenny":"Good morning."
+        });
+    
+
+
+    //task2
+    function calculateSumOfBonus(data){
+    // write down your bonus rule in comments
+    // your code here, based on your own rules
+    let obj=data['employees'];
+    //obj=[(人,薪水,表現,職務),]
+    //整理匯率
+    for (let i=0;i<obj.length;i++){
+        obj[i]['salary']=obj[i]['salary'].toString();
+        obj[i]['salary']=obj[i]['salary'].replace(",","");
+        ans=obj[i]['salary'].includes("USD");
+        if (ans==true){
+            let change=obj[i]['salary'].replace("USD","");
+            obj[i]['salary']=change*30;
+        }else{
+            //轉換回整數
+            obj[i]['salary']=obj[i]['salary']*1;
+        }
+   
+    }
+    //公式 salary, performance and role fields
+    let role={'Engineer':1,'Sales':1,'CEO':1.2};
+    let performance={'above average':1.1,'average':1,'below average':0.9}
+    for(let i=0;i<obj.length;i++){
+        let keyr=Object.keys(role);
+        for(let j=0;j<obj.length;j++){
+            if(obj[i]['role']==keyr[j]){
+                obj[i]['role']=role[keyr[j]];
+            }
+        let keyp=Object.keys(performance);
+        for(let k=0;k<obj.length;k++){
+            if(obj[i]['performance']==keyp[k]){
+                obj[i]['performance']=performance[keyp[k]];
+            }
+
+        }
+    
+        
+    }}
+   
+    //計算獎金
+    bonus_sum=0
+    for(let i=0;i<obj.length;i++){
+        obj[i]['bonus']=obj[i]['salary']*0.01*obj[i]['performance']*obj[i]['role'];
+        bonus_sum+=obj[i]['bonus'];
+    }
+    if(bonus_sum>10000){
+        console.log("總獎金超過10000")
+    } else{
+        console.log("總獎金"+bonus_sum)
+    }
+
+
+    }
+
+    calculateSumOfBonus({
+    "employees":[
+    {
+    "name":"John",
+    "salary":"1000USD",
+    "performance":"above average",
+    "role":"Engineer"
+    },
+    {
+    "name":"Bob",
+    "salary":60000,
+    "performance":"average",
+    "role":"CEO"
+    },
+    {
+    "name":"Jenny",
+    "salary":"50,000",
+    "performance":"below average",
+    "role":"Sales"
+    }
+    ]
+    }) // call calculateSumOfBonus function
+
+    
+
+    //task3
+
+    function func(...data){
+    // your code here
+        second={}
+        for(let i=0;i<data.length;i++){
+            second[data[i]]=[data[i][1],0]
+
+        }
+        //second={'名字':['第二個字',數量],'名字':['第二個字',數量]}
+        for(let i=0;i<data.length;i++){
+            for(let j=0;j<data.length;j++){
+                if(second[data[i]][0]==second[data[j]][0]){
+                    second[data[i]][1]+=1;
+                }
+            }
+        }
+        //印出人名
+        let no_one=0;
+        for(let i=0;i<data.length;i++){
+            if(second[data[i]][1]==1){
+                console.log(data[i]);
+                no_one=1;
+            }
+        }
+        if(no_one==0){
+                console.log("沒有");
+            }
+
+    }
+
+    func("彭⼤牆", "王明雅", "吳明"); // print 彭⼤牆
+    func("郭靜雅", "王立強", "林靜宜", "郭立恆", "林花花"); // print 林花花
+    func("郭宣雅", "林靜宜", "郭宣恆", "林靜花"); // print 沒有
+
+    
+    
+
+    //task4
+    function getNumber(index){
+    // your code here
+        let output=0;
+        if(index%2==0){
+            output=index/2*3;
+            console.log(output);
+        }else{
+            output=(index+1)/2*3+1;
+            console.log(output);
+        }
+
+    }
+    getNumber(1); // print 4
+    getNumber(5); // print 10
+    getNumber(10); // print 15
+
+
+    /*task5
+    */
+
+    </script>
+	</body>
+</html>

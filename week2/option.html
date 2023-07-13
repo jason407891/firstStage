@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    function findIndexOfCar(seats, status, number){
+    let avalible_seat=seats;
+    let ans=-1;
+    let nowmin=100
+    for(let i=0;i<avalible_seat.length;i++){
+        if(status[i]==0){
+            avalible_seat[i]=0;
+        }
+        avalible_seat[i]-=number;
+        if(avalible_seat[i]>-1&&avalible_seat[i]<nowmin){
+            nowmin=avalible_seat[i];
+            ans=i;
+        }   
+    }
+    console.log(ans);
+    }
+
+    findIndexOfCar([3, 1, 5, 4, 2], [0, 1, 0, 1, 1], 2); // print 4
+    findIndexOfCar([1, 0, 5, 1, 3], [0, 1, 0, 1, 1], 4); // print -1
+    findIndexOfCar([4, 6, 5, 8], [0, 1, 1, 1], 4); // print 
+</script>
+</body>
+</html>

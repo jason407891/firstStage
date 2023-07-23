@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 網頁標題-->
+  <title>網頁標題</title>
+  <link rel="stylesheet" type="text/css" href="index.css"/>
+</head>
+<body class="body">
+<!-- 網頁內容 -->
+<div class="first_part">
+    <div class="left">
+        <div class="titlename">My Website</div>
+    </div>
+    <div class="right">
+        <div class="item">Item1</div>
+        <div class="item">Item2</div>
+        <div class="item">Item3</div>
+        <div class="item">Item4</div>
+    </div>
+    <div class="showmenu">
+        <img class="menu" src="menu.png">
+    </div>
+</div>
+
+<div class="welcome_part">
+    <div class="welcome_content">Welcome to MyHome</div>
+</div>
+<div class="second_part">
+    <div class="promo_attra">
+        <div class="promotion">
+            </div>
+        <div class="attraction">
+        </div>
+    </div>
+</div>
+
+<div class="load_more">
+    <button onclick="getdata(function(data){loadmore(data, load_times)})">Load More</button>
+</div>
+
+</body>
+<script>
+    /*
+    //新增promotion(i為個數)
+    for(let i=0;i<3;i++){
+        //新增promotion-block
+        let newblock=document.createElement("div");
+        newblock.className="promotion-block";
+        let container = document.getElementsByClassName("promotion")[0];
+        container.appendChild(newblock);
+
+        //新增promotion-image
+        let newimg=document.createElement("img");
+        newimg.className="promotion-image";
+        newimg.src="content.jpg";
+        let img_container = document.getElementsByClassName("promotion-block")[i];
+        img_container.appendChild(newimg);
+
+        //新增promotion-text
+        let newtext=document.createElement("div");
+        newtext.className="promotion-text";
+        newtext.textContent="title1"
+        let text_container = document.getElementsByClassName("promotion-block")[i];
+        text_container.appendChild(newtext);
+    }
+    //新增attraction(i為圖片個數)
+    for(let i=0;i<12;i++){
+        //新增attraction-block
+        let newblock=document.createElement("div");
+        newblock.className="attraction-block";
+        let container = document.getElementsByClassName("attraction")[0];
+        container.appendChild(newblock);
+
+        //新增attraction-image
+        let newimg=document.createElement("img");
+        newimg.className="attraction-image";
+        newimg.src="content.jpg";
+        let img_container = document.getElementsByClassName("attraction-block")[i];
+        img_container.appendChild(newimg);
+
+        //新增attraction-text
+        let newtext=document.createElement("div");
+        newtext.className="attraction-text";
+        newtext.textContent="title1"
+        let text_container = document.getElementsByClassName("attraction-block")[i];
+        text_container.appendChild(newtext);
+    }
+    //連接Json檔案取資料的回呼函式
+    */
+    function getdata(callback){
+        //存放title
+        let title_array=[];
+        //存放img網址
+        let image_array=[];
+        let url = "https://padax.github.io/taipei-day-trip-resources/taipei-attractions-assignment.json";
+        fetch(url).then(function(response){return response.json();}).then(function(data){
+            data.result.results.forEach(function(attraction){
+                title_array.push(attraction.stitle);
+                let image = attraction.file;
+                image = image.toLowerCase().split(".jpg");
+                image=image[0]+".jpg"
+                image_array.push(image);});
+                callback({titles: title_array, images: image_array}); //呼叫回呼函式，並且帶入參數
+        });
+        }
+    
+    getdata(function(data){
+        for(let i=0;i<3;i++){
+            //新增promotion-block
+            let newblock=document.createElement("div");
+            newblock.className="promotion-block";
+            let container = document.getElementsByClassName("promotion")[0];
+            container.appendChild(newblock);
+
+            //新增promotion-image
+            let newimg=document.createElement("img");
+            newimg.className="promotion-image";
+            newimg.src=data.images[i];
+            let img_container = document.getElementsByClassName("promotion-block")[i];
+            img_container.appendChild(newimg);
+
+            //新增promotion-text
+            let newtext=document.createElement("div");
+            newtext.className="promotion-text";
+            newtext.textContent=data.titles[i];
+            let text_container = document.getElementsByClassName("promotion-block")[i];
+            text_container.appendChild(newtext);
+        }
+        for(let i=0;i<12;i++){
+            //新增attraction-block
+            let newblock=document.createElement("div");
+            newblock.className="attraction-block";
+            let container = document.getElementsByClassName("attraction")[0];
+            container.appendChild(newblock);
+
+            //新增attraction-image
+            let newimg=document.createElement("img");
+            newimg.className="attraction-image";
+            newimg.src=data.images[i+4];
+            let img_container = document.getElementsByClassName("attraction-block")[i];
+            img_container.appendChild(newimg);
+
+            //新增attraction-text
+            let newtext=document.createElement("div");
+            newtext.className="attraction-text";
+            newtext.textContent=data.titles[i+4];
+            let text_container = document.getElementsByClassName("attraction-block")[i];
+            text_container.appendChild(newtext);
+        }
+
+
+    });
+
+    let load_times=0;
+    function loadmore(data, loadtimes){
+        for(let i=0;i<12;i++){
+            //再抓到最後一筆資料時跳出迴圈，並且隱藏loadmore button
+            if (load_times==3&&i==7){
+                let load_button=document.getElementsByClassName("load_more")[0];
+                load_button.style.display="none";
+                break;
+            }
+            //新增attraction-block
+            let newblock=document.createElement("div");
+            newblock.className="attraction-block";
+            let container = document.getElementsByClassName("attraction")[0];
+            container.appendChild(newblock);
+
+            //新增attraction-image
+            let newimg=document.createElement("img");
+            newimg.className="attraction-image";
+            newimg.src=data.images[i+15+loadtimes*12];
+            let img_container = document.getElementsByClassName("attraction-block")[i+12+loadtimes*12];
+            img_container.appendChild(newimg);
+
+            //新增attraction-text
+            let newtext=document.createElement("div");
+            newtext.className="attraction-text";
+            newtext.textContent=data.titles[i+15+loadtimes*12];
+            let text_container = document.getElementsByClassName("attraction-block")[i+12+loadtimes*12];
+            text_container.appendChild(newtext);
+        }
+        load_times+=1;
+    }
+</script>    
+</body>
+</html>

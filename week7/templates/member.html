@@ -1,0 +1,99 @@
+<!DOCTYPE html> <!--文件型態-->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title> <!--網頁標題-->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}"/>
+        
+    </head>
+    <body class="body">
+        <div class="top">
+            <div class="welcometext">歡迎光臨，這是會員頁</div>
+        </div>
+        <div class="login">
+            <div>{{result}}，歡迎登入系統</div>
+        </div> 
+        <div class="logout">
+            <a href="/signout">登出系統</a>
+        </div>
+        <hr/>
+        <div class="msgform">
+            <div>查詢會員姓名</div>
+            <input id="inputfield" required></input>
+            <button id="searchmemberbtn">查詢</button>
+        </div>
+        <div id="membercontainer"></div> 
+
+        <div class="msgform">
+            <div>更新我的姓名</div>
+            <input id="updatename" required></input>
+            <button id="updatebtn">更新</button>
+        </div>
+        <div id="updateresult"></div> 
+
+    <script>
+        document.getElementById("searchmemberbtn").addEventListener("click", function(){
+            searchmember();
+        });
+
+        document.getElementById("updatebtn").addEventListener("click", function(){
+            updatemember();
+        });
+
+        function searchmember(){
+            let username = document.getElementById("inputfield").value;
+            // Ajax查詢
+            fetch('/api/member?username=' + username)
+            .then(response => response.json())
+            .then(data => {
+                let showdata = document.getElementById('membercontainer');
+                // 清空
+                showdata.innerHTML = '';
+                
+                if (data.data) {
+                    let memberData = data.data;
+                    let memberInfo = document.createElement('div');
+                    memberInfo.className="msgform"
+                    memberInfo.textContent = `${memberData.name} (${memberData.username})`;
+                    showdata.appendChild(memberInfo);
+                } else {
+                    let noDataDiv = document.createElement('div');
+                    noDataDiv.className="msgform"
+                    noDataDiv.textContent = '查無資料';
+                    showdata.appendChild(noDataDiv);
+                }
+            });
+        }
+       
+        function updatemember(){
+            let username = document.getElementById("updatename").value;
+            // Ajax查詢
+            fetch('/api/member',{
+                method:"PATCH", 
+                headers:{"Content-Type": "application/json"}, 
+                body: JSON.stringify({
+                    name: username
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                let showdata = document.getElementById('updateresult');
+                // 清空
+                showdata.innerHTML = '';
+                
+                if (data.ok) {
+                    let updateInfo = document.createElement('div');
+                    updateInfo.className="msgform"
+                    updateInfo.textContent = "更新成功";
+                    showdata.appendChild(updateInfo);
+                } else {
+                    let noDataDiv = document.createElement('div');
+                    noDataDiv.className="msgform";
+                    noDataDiv.textContent = '更新失敗';
+                    showdata.appendChild(noDataDiv);
+                }
+            });
+        }
+    </script>
+    </body>
+</html>
